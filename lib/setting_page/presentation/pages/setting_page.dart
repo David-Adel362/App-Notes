@@ -1,0 +1,63 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:note/home_page/presentation/pages/home_page.dart';
+import 'package:note/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
+
+class SettingPage extends StatelessWidget {
+  const SettingPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            CupertinoIcons.back,
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: Container(
+        padding: const EdgeInsets.only(
+          top: 20,
+          left: 40,
+          right: 15,
+          bottom: 20,
+        ),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.circular(13),
+        ),
+        child: Row(
+          spacing: 120,
+          children: [
+            Text(
+              'Dark Mode',
+              style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            CupertinoSwitch(
+              value: Provider.of<ThemeProvider>(context, listen: false).isDarkMode,
+              onChanged: (value) => Provider.of<ThemeProvider>(context, listen: false).toggleTheme(),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
