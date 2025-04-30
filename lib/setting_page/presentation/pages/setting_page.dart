@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:note/home_page/presentation/pages/home_page.dart';
 import 'package:note/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 

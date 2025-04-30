@@ -23,10 +23,9 @@ class CustomTextForm extends StatelessWidget {
       style: TextStyle(
         fontSize: 16,
         color: Theme.of(context).colorScheme.inversePrimary,
-        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       validator: (value) {
-        if (value == null || value.isEmpty) return 'Title is required';
+        if (value == null || value.isEmpty) return '$hintText is required';
         return null;
       },
       controller: text,

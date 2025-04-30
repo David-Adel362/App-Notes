@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../home_page/presentation/widgets/custom_create_note.dart';
 import '../../../home_page/presentation/widgets/custom_text_form.dart' show CustomTextForm;
 import '../../../models/sqldb.dart';
@@ -41,10 +41,20 @@ class _AddNotesState extends State<AddNotes> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            CupertinoIcons.back,
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
+        ),
         title: Text(
           'Add Notes',
           style: TextStyle(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,

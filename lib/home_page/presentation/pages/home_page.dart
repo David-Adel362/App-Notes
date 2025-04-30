@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note/home_page/presentation/pages/note_tile.dart';
+import 'package:note/home_page/presentation/pages/search_page.dart';
 import 'package:note/home_page/presentation/widgets/custom_dialog.dart';
 import 'package:note/home_page/presentation/widgets/custom_drawer.dart';
+import 'package:note/home_page/presentation/widgets/custom_icon_search.dart';
 import 'package:note/models/sqldb.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,13 +17,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Sqldb sqlDb = Sqldb();
   bool isLoading = false;
-  List notes = [];
-
+  List<Map> notes = [];
+  List<Map> filteredNotes = [];
 
   Future<List<Map>> readData() async {
     List<Map> response = await sqlDb.readData("SELECT * FROM 'notes'");
-
+    await Future.delayed(Duration(milliseconds: 500));
     notes.addAll(response);
+    filteredNotes = List.from(notes);
     isLoading = false;
     if (mounted) {
       setState(() {});
@@ -38,11 +41,32 @@ class _HomePageState extends State<HomePage> {
     readData();
   }
 
+  void _filterNotes(List<Map> newNotes) {
+    setState(() {
+      filteredNotes = newNotes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        actions: [
+          CustomIconSearch(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(
+                    notes: notes,
+                    onSearch: _filterNotes,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -86,7 +110,9 @@ class _HomePageState extends State<HomePage> {
                           onDeleted: () async {
                             setState(() {
                               notes.removeWhere((e) => e['id'] == item['id']);
+                              filteredNotes.removeWhere((e) => e['id'] == item['id']);
                               Navigator.pop(context);
+                              readData();
                             });
                           },
                           onEdited: () async {
